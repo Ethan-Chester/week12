@@ -1,9 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-import Link from "next/link";
+import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
-export default async function VideoPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: { id: string };
+}
+
+export default async function VideoPage({ params }: PageProps) {
   const video = await prisma.video.findUnique({
     where: { id: parseInt(params.id, 10) },
   });
@@ -14,11 +18,13 @@ export default async function VideoPage({ params }: { params: { id: string } }) 
 
   return (
     <div>
-        <Link className="m-3 p-3 bg-red-500" href={"/videos"}>BACK</Link>
+      <Link className="m-3 p-3 bg-red-500" href="/videos">
+        BACK
+      </Link>
 
-        <h1 className='flex justify-center m-4'>{video.name}</h1>
-        <p className='flex justify-center m-4'>Genre: {video.genre}</p>
-        <p className='flex justify-center m-4'>Director: {video.director}</p>
+      <h1 className="flex justify-center m-4">{video.name}</h1>
+      <p className="flex justify-center m-4">Genre: {video.genre}</p>
+      <p className="flex justify-center m-4">Director: {video.director}</p>
     </div>
   );
 }
