@@ -1,15 +1,12 @@
 import { PrismaClient } from '@prisma/client';
+import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
 export default async function Home() {
-  const videos = await prisma.video.findMany();
+  redirect('/videos');
 
   return (
-    <div id="videos" >
-      {videos.map((video) => (
-        <h1 className='flex justify-center m-5' key={video.id}>{video.name}</h1>
-      ))}
-    </div>
+    <div></div>
   );
 }
