@@ -3,10 +3,11 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-import type { NextRequest } from 'next/server';
-
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(
+  request: Request,
+  context: { params: Record<string, string> } 
+) {
+  const { slug } = context.params;
 
   try {
     const video = await prisma.video.findUnique({
@@ -24,8 +25,12 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+// PUT handler
+export async function PUT(
+  request: Request,
+  context: { params: Record<string, string> }
+) {
+  const { slug } = context.params;
 
   try {
     const { name, genre, director } = await request.json();
