@@ -1,4 +1,3 @@
-// app/videos/page.tsx
 import { PrismaClient } from '@prisma/client';
 import VideosClient from './VideosClient';
 
