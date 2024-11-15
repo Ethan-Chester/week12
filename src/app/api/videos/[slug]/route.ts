@@ -3,15 +3,13 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function GET(
-  request: Request,
-  context: { params: Record<string, string> } 
-) {
-  const { slug } = context.params;
+export async function GET(request: Request) {
+  const { pathname } = new URL(request.url);
+  const slug = pathname.split('/').pop();
 
   try {
     const video = await prisma.video.findUnique({
-      where: { id: parseInt(slug, 10) },
+      where: { id: parseInt(slug || '', 10) }, // Assuming `id` is an integer
     });
 
     if (!video) {
@@ -25,12 +23,9 @@ export async function GET(
   }
 }
 
-// PUT handler
-export async function PUT(
-  request: Request,
-  context: { params: Record<string, string> }
-) {
-  const { slug } = context.params;
+export async function PUT(request: Request) {
+  const { pathname } = new URL(request.url);
+  const slug = pathname.split('/').pop();
 
   try {
     const { name, genre, director } = await request.json();
@@ -40,7 +35,7 @@ export async function PUT(
     }
 
     const updatedVideo = await prisma.video.update({
-      where: { id: parseInt(slug, 10) },
+      where: { id: parseInt(slug || '', 10) },
       data: { name, genre, director },
     });
 
