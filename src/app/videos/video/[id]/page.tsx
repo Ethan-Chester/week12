@@ -7,7 +7,7 @@ interface VideoPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function VideoPage({ params }: VideoPageProps) {
+export default async function VideoPage({ params }: any) {
   const resolvedParams = await params;
   const video = await prisma.video.findUnique({
     where: { id: parseInt(resolvedParams.id, 10) },

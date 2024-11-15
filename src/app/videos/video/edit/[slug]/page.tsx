@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
-export default function EditVideoPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default function EditVideoPage() {
+  const { slug } = useParams(); 
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +14,8 @@ export default function EditVideoPage({ params }: { params: { slug: string } }) 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!slug) return; 
+
     const fetchVideo = async () => {
       const res = await fetch(`/api/videos/${slug}`);
       if (res.ok) {
@@ -32,16 +34,18 @@ export default function EditVideoPage({ params }: { params: { slug: string } }) 
     fetchVideo();
   }, [slug]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const res = await fetch(`/api/videos/${slug}`, {
-      method: 'PUT', 
+      method: 'PUT',
       body: JSON.stringify(formData),
       headers: {
         'Content-Type': 'application/json',
@@ -49,14 +53,14 @@ export default function EditVideoPage({ params }: { params: { slug: string } }) 
     });
 
     if (res.ok) {
-      router.push('/videos'); 
+      router.push('/videos');
     } else {
       alert('Failed to update video');
     }
   };
 
   if (isLoading) {
-    return <p>Loading...</p>; 
+    return <p>Loading...</p>;
   }
 
   return (
