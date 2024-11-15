@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     });
 
   } catch (error) {
+    console.error("Error deleting video:", error);
     return NextResponse.json({ error: "Failed to delete video" }, { status: 500 });
   }
 }

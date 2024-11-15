@@ -14,14 +14,6 @@ export default function VideosClient({ videos }: { videos: { id: number; name: s
 
     setIsDeleting(parseInt(id, 10));
 
-    const res = await fetch("/videos/video/delete", {
-      method: "POST",
-      body: JSON.stringify({ id }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
     window.location.reload(); 
 
     setIsDeleting(null); 
