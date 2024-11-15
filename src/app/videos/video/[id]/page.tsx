@@ -3,7 +3,11 @@ import Link from 'next/link';
 
 const prisma = new PrismaClient();
 
-export default async function VideoPage({ params }: { params: { id: string } }) {
+interface VideoPageProps {
+  params: { id: string };
+}
+
+export default async function VideoPage({ params }: VideoPageProps) {
   const video = await prisma.video.findUnique({
     where: { id: parseInt(params.id, 10) },
   });
